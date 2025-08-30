@@ -1,66 +1,91 @@
-# 🤖 Code Review Bot
+# AI Code Review Bot 🤖
 
-AI-powered code review bot that integrates with your Git workflow to provide automated code reviews using Claude, ChatGPT, or Gemini.
+An intelligent code review assistant powered by Claude, ChatGPT, and Gemini that helps improve your code quality through automated reviews.
+
+![Python](https://img.shields.io/badge/Python-3.11+-blue)
+![Poetry](https://img.shields.io/badge/Poetry-dependency%20management-blue)
+![License](https://img.shields.io/badge/License-MIT-green)
+![Tests](https://img.shields.io/badge/Tests-pytest-green)
 
 ## ✨ Features
 
-- 🔍 **Multi-AI Support**: Choose from Claude, ChatGPT, or Gemini
-- 📝 **Customizable Prompts**: Edit prompt templates to fit your review needs
-- 🎯 **Git Integration**: Review on commit, push, or manually
-- 📊 **TODO Management**: Track improvement suggestions as actionable items
-- 🎨 **Rich CLI Interface**: Beautiful terminal interface with colors and progress indicators
-- ⚙️ **Flexible Configuration**: Local and global configuration options
-- 📈 **Review History**: Save all reviews as markdown files
+- 🤖 **Multi-AI Support**: Works with Claude (Anthropic), ChatGPT (OpenAI), and Gemini (Google)
+- 📝 **Customizable Prompts**: Create and use custom review templates with Jinja2
+- 🔧 **Git Integration**: Seamlessly integrates with your Git workflow via hooks
+- 📊 **Rich CLI Interface**: Beautiful command-line interface with progress bars and colors
+- 🌐 **Web Dashboard**: Modern FastAPI-based web interface for managing reviews
+- ✅ **TODO Management**: Track and manage code improvement suggestions
+- 🎯 **Smart Filtering**: Review specific files, staged changes, or commits
+- 💰 **Cost Estimation**: Estimate AI API costs before running reviews
+- 🔄 **Async Operations**: Fast, concurrent processing of multiple files
 
-## 🚀 Installation
+## 🚀 Quick Start
 
-### Prerequisites
+### Installation
 
-- Node.js 18+
-- Git repository
-- API key for your chosen AI provider
-
-### Quick Start
-
-1. **Clone and install:**
+**Recommended: Git-based Installation** (avoids system Python issues)
 
 ```bash
-git clone <repository-url>
-cd review-bot
-npm install
-npm run build
-npm link  # Makes 'review-bot' available globally
+# Option 1: Automatic installation script
+curl -sSL https://raw.githubusercontent.com/your-username/code-review-bot/main/install.sh | bash
+
+# Option 2: Manual Git clone with Poetry
+git clone https://github.com/your-username/code-review-bot.git
+cd code-review-bot
+poetry install
+
+# Option 3: Manual Git clone with venv
+git clone https://github.com/your-username/code-review-bot.git
+cd code-review-bot
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+pip install -e .
+
+# Option 4: pipx from Git
+pipx install git+https://github.com/your-username/code-review-bot.git
 ```
 
-2. **Initialize configuration:**
+### Basic Usage
 
-```bash
-review-bot config init
-```
+1. **Initialize configuration:**
+   ```bash
+   review-bot config init
+   ```
 
-3. **Set your AI provider and API key:**
+2. **Set your API key:**
+   ```bash
+   # For Claude (recommended)
+   review-bot config set api_key YOUR_ANTHROPIC_API_KEY
 
-```bash
-# Using Claude (recommended)
-review-bot config set provider claude
-review-bot config set apiKey your-anthropic-api-key
+   # For ChatGPT
+   review-bot config set provider chatgpt
+   review-bot config set api_key YOUR_OPENAI_API_KEY
 
-# Or using environment variables
-export ANTHROPIC_API_KEY="your-api-key"
-```
+   # For Gemini
+   review-bot config set provider gemini
+   review-bot config set api_key YOUR_GOOGLE_API_KEY
+   ```
 
-4. **Run your first review:**
+3. **Run your first review:**
+   ```bash
+   # Review current working changes
+   review-bot run
 
-```bash
-# Review current changes
-review-bot run
+   # Review staged changes
+   review-bot run --staged
 
-# Review staged changes only
-review-bot run --staged
+   # Review a specific commit
+   review-bot run --commit abc123
 
-# Review specific commit
-review-bot run --commit abc123
-```
+   # Use a custom prompt template
+   review-bot run --prompt security
+   ```
+
+4. **Launch web dashboard:**
+   ```bash
+   review-bot dashboard
+   ```
 
 ## 🎯 Usage
 
@@ -85,32 +110,25 @@ review-bot status
 
 ### Configuration
 
-Create a `.reviewbotrc` file in your project or home directory:
+The bot supports both file-based and environment variable configuration:
 
-```json
-{
-  "provider": "claude",
-  "model": "claude-3-sonnet-20240229",
-  "apiKey": "your-api-key",
-  "promptTemplate": "default",
-  "autoReview": {
-    "onCommit": true,
-    "onPush": false
-  },
-  "outputDir": "./reviews",
-  "maxFilesPerReview": 50,
-  "maxTokens": 4000
-}
+```yaml
+# ~/.review-bot/config.yaml
+provider: claude
+model: claude-3-5-sonnet-20241022
+api_key: your-api-key
+output_dir: reviews
+max_files_per_review: 50
+temperature: 0.1
+auto_review:
+  on_commit: true
+  on_push: false
 ```
 
-### Environment Variables
-
-```bash
-# API Keys
-export ANTHROPIC_API_KEY="your-claude-api-key"
-export OPENAI_API_KEY="your-openai-api-key"
-export GOOGLE_API_KEY="your-gemini-api-key"
-```
+Environment variables:
+- `ANTHROPIC_API_KEY` - Claude API key
+- `OPENAI_API_KEY` - ChatGPT API key  
+- `GOOGLE_API_KEY` - Gemini API key
 
 ## 🎨 Prompt Templates
 
@@ -120,26 +138,32 @@ The bot comes with three built-in prompt templates:
 - **`security-focused`**: Specialized security vulnerability analysis
 - **`performance-focused`**: Performance and optimization analysis
 
-### Creating Custom Prompts
+### Custom Prompt Templates
 
-1. Create a new `.md` file in the `prompts/` directory
-2. Use template variables like `{{code_diff}}`, `{{files_changed}}`
-3. Use the new template: `review-bot run --prompt your-template`
-
-Example custom prompt:
+Create custom review templates with Jinja2:
 
 ```markdown
-# My Custom Review
+<!-- prompts/security.md -->
+---
+description: "Security-focused code review"
+author: "Security Team"
+---
 
-Please review this code focusing on:
+# Security Code Review
 
-- Code readability
-- Error handling
-- Documentation
+Please perform a security review of the following changes:
 
-## Code Changes
+{{ code_diff }}
 
-{{code_diff}}
+## Focus Areas
+- Input validation
+- Authentication & authorization
+- SQL injection prevention
+- XSS prevention
+- Secure data handling
+
+Files changed: {{ files_changed }}
+Branch: {{ branch }}
 ```
 
 ## 📋 TODO Management

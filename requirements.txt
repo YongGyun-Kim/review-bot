@@ -1,0 +1,32 @@
+# AI 코드 리뷰 봇 - Requirements.txt
+# Poetry export로 생성된 의존성 목록
+
+# 핵심 프레임워크
+typer[all]==0.9.4
+fastapi[all]==0.109.2
+pydantic==2.11.7
+rich==13.9.4
+
+# AI 제공자 SDK
+anthropic==0.25.9
+openai==1.102.0
+google-generativeai==0.4.1
+
+# Git 및 유틸리티
+gitpython==3.1.45
+jinja2==3.1.6
+pyyaml==6.0.2
+aiofiles==23.2.1
+
+# 웹 서버
+uvicorn==0.27.1
+
+# 기타 유틸리티
+python-dotenv==1.1.1
+questionary==2.1.1
+
+# 시스템 의존성
+click==8.2.1
+httpx==0.26.0
+websockets==12.0
+watchfiles==1.1.0
