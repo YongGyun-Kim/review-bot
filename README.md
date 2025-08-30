@@ -15,13 +15,15 @@ AI-powered code review bot that integrates with your Git workflow to provide aut
 ## 🚀 Installation
 
 ### Prerequisites
-- Node.js 18+ 
+
+- Node.js 18+
 - Git repository
 - API key for your chosen AI provider
 
 ### Quick Start
 
 1. **Clone and install:**
+
 ```bash
 git clone <repository-url>
 cd review-bot
@@ -31,11 +33,13 @@ npm link  # Makes 'review-bot' available globally
 ```
 
 2. **Initialize configuration:**
+
 ```bash
 review-bot config init
 ```
 
 3. **Set your AI provider and API key:**
+
 ```bash
 # Using Claude (recommended)
 review-bot config set provider claude
@@ -46,6 +50,7 @@ export ANTHROPIC_API_KEY="your-api-key"
 ```
 
 4. **Run your first review:**
+
 ```bash
 # Review current changes
 review-bot run
@@ -103,7 +108,7 @@ Create a `.reviewbotrc` file in your project or home directory:
 ```bash
 # API Keys
 export ANTHROPIC_API_KEY="your-claude-api-key"
-export OPENAI_API_KEY="your-openai-api-key" 
+export OPENAI_API_KEY="your-openai-api-key"
 export GOOGLE_API_KEY="your-gemini-api-key"
 ```
 
@@ -122,15 +127,18 @@ The bot comes with three built-in prompt templates:
 3. Use the new template: `review-bot run --prompt your-template`
 
 Example custom prompt:
+
 ```markdown
 # My Custom Review
 
 Please review this code focusing on:
+
 - Code readability
 - Error handling
 - Documentation
 
 ## Code Changes
+
 {{code_diff}}
 ```
 
@@ -177,16 +185,19 @@ reviews/
 ## 🤖 AI Providers
 
 ### Claude (Recommended)
+
 - **Model**: `claude-3-sonnet-20240229` (default)
 - **API Key**: Set `ANTHROPIC_API_KEY`
 - **Cost**: ~$0.003-0.015 per 1K tokens
 
 ### ChatGPT
+
 - **Model**: `gpt-4` (default)
-- **API Key**: Set `OPENAI_API_KEY`  
+- **API Key**: Set `OPENAI_API_KEY`
 - **Cost**: ~$0.03-0.06 per 1K tokens
 
 ### Gemini
+
 - **Model**: `gemini-pro` (default)
 - **API Key**: Set `GOOGLE_API_KEY`
 - **Cost**: ~$0.00025-0.0005 per 1K tokens
@@ -194,6 +205,7 @@ reviews/
 ## 📈 Examples
 
 ### Basic Review
+
 ```bash
 # Review current changes
 review-bot run
@@ -208,11 +220,13 @@ review-bot run
 ```
 
 ### Security Review
+
 ```bash
 review-bot run --prompt security-focused
 ```
 
 ### Performance Review
+
 ```bash
 review-bot run --prompt performance-focused
 ```
@@ -243,7 +257,7 @@ npm run typecheck
 review-bot/
 ├── src/
 │   ├── core/           # Core managers (config, git, review, etc.)
-│   ├── providers/      # AI service integrations  
+│   ├── providers/      # AI service integrations
 │   ├── cli/           # Command-line interface
 │   └── types/         # TypeScript definitions
 ├── prompts/           # Review prompt templates
@@ -267,17 +281,9 @@ MIT License - see LICENSE file for details.
 ## 🆘 Support
 
 - 🐛 **Bug reports**: Create an issue on GitHub
-- 💡 **Feature requests**: Create an issue with enhancement label  
+- 💡 **Feature requests**: Create an issue with enhancement label
 - 📖 **Documentation**: Check the `/docs` directory
 - 💬 **Questions**: Start a discussion on GitHub
-
-## 🗺️ Roadmap
-
-- [ ] **Web Dashboard**: Browser-based review management
-- [ ] **Team Features**: Shared configurations and reviews
-- [ ] **Integration**: GitHub/GitLab PR integration
-- [ ] **Analytics**: Review metrics and insights
-- [ ] **Custom Rules**: Define project-specific review criteria
 
 ---
 
